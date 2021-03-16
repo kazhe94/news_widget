@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', ()=> {
   const newsList = document.querySelector('.news__list');
+  let button = null;
     
   function randomDate(start, end) {
       return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -22,8 +23,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
   }
   const modifyRead = (arr, id) => {
     const currentEl = arr.find(item => item.id === id)
-    // console.log(arr);
     currentEl.read = true
+    button.textContent = newsLength(arr)
     renderNews(arr)
   }
   const readNews = (arr) => {
@@ -75,14 +76,30 @@ document.addEventListener('DOMContentLoaded', ()=> {
     })
   }
   
+  const newsLength = (arr) => {
+    return arr.filter(item => item.read !== true).length
+  }
+
+  const createButton = (arr) => {
+    button = document.createElement('button')
+    button.classList.add('open-btn')
+    button.textContent = newsLength(arr)
+    document.body.appendChild(button)
+    button.addEventListener('click', ()=> {
+      newsList.classList.toggle('news__list--active')
+      renderNews(arr);
+      readNews(arr);
+    })
+  }
+  
   const getData = async () => {
     try {
       const response = await fetch('https://jsonplaceholder.typicode.com/posts')
       data = await response.json()
       data.splice(10)
       const newsArr = mapArr(data)
-      renderNews(newsArr);
-      readNews(newsArr);
+      createButton(newsArr)
+      
     } catch (e) {
       console.log(e.message);
     }

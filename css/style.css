@@ -2,7 +2,6 @@ body {
     margin: 0;
     padding: 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background-color: rgb(149, 149, 149);
 }
 * {
     box-sizing: border-box;
@@ -10,12 +9,6 @@ body {
 a {
     text-decoration: none;
     color: inherit;
-}
-.container {
-    max-width: 1240px;
-    width: 100%;
-    padding: 0 20px;
-    margin: 0 auto;
 }
 h1,h2,h3,h4,h5,h6,p {
     margin: 0;
@@ -26,25 +19,38 @@ ul, li {
     margin: 0;
     padding: 0;
 }
-.news-container {
-    position: fixed;
-    bottom: 0;
-    right: 0;
+.container {
+    max-width: 1240px;
+    width: 100%;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+.title {
+    text-align: center;
+    padding-top: 30px;
 }
 .news__list {    
+    position: fixed;
+    bottom: 10px;
+    right: 50px;
+    display: none;
     width: 60%;
     height: 500px;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: rgba(0, 79, 143, 0.507);
+    border: 1px solid #ccc;
     border-radius: 10px;
     padding: 10px;
     overflow: auto;
+}
+.news__list--active {
+    display: block;
 }
 .news__list-item {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
-    background-color: rgb(255, 254, 238);
+    background-color: #eee;
 }
 .news__list-item--read {
     background-color: #fff;
@@ -90,6 +96,20 @@ ul, li {
 }
 .open-btn {
     position: fixed;
-    bottom: 0;
-    right: 0;
+    bottom: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    font-size: 18px;
+    color: #fff;
+    background-color: red;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.4s;
+    outline: none;
+}
+.open-btn:hover {
+    background-color: rgb(255, 128, 128);
+    box-shadow: 3px 3px 3px black;
 }
