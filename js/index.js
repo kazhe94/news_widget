@@ -1,32 +1,40 @@
 document.addEventListener('DOMContentLoaded', ()=> {
   const newsList = document.querySelector('.news__list');
   let button = null;
+  let modal = null;
     
-  function randomDate(start, end) {
+  const randomDate = (start, end) => {
       return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-  }
-  function capFirst(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-  
-  function getRandomInt(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-  }
-  
-  function generateName(){
-    let name1 = ["abandoned","able","absolute","adorable","adventurous","academic","acceptable","acclaimed","accomplished","accurate","aching","acidic","acrobatic","active","actual","adept","admirable","admired","adolescent","adorable","adored","advanced","afraid","affectionate","aged","aggravating","aggressive","agile","agitated","agonizing","agreeable"];
-  
-    let name2 = ["people","history","way","art","world","information","map","family","government","health","system","computer","meat","year","thanks","music","person","reading","method","data","food","understanding","theory","law","bird","literature","problem","software","control","knowledge","power","ability","economics","love"];
-  
-    let name = capFirst(name1[getRandomInt(0, name1.length + 1)]) + ' ' + capFirst(name2[getRandomInt(0, name2.length + 1)]);
-    return name;  
   }
   const modifyRead = (arr, id) => {
     const currentEl = arr.find(item => item.id === id)
     currentEl.read = true
     button.textContent = newsLength(arr)
     renderNews(arr)
+    renderModal(currentEl)
   }
+
+  document.body.addEventListener('click', (e) => {
+
+    if(e.target.classList.contains('modal__close') || e.target.classList.contains('modal__backdrop')) {
+      modal = null
+      document.body.querySelector('.modal').remove()
+    }
+  })
+
+  const renderModal = (item) => {
+    modal = 
+    `<div class="modal">
+      <div class="modal__backdrop"></div>      
+        <div class="modal__body">
+          <h4 class="modal__title">${item.title} ${item.id}</h4>
+          <p class="modal__text">${item.body}</p>
+          <div class="modal__close">&times;</div>        
+      </div>
+    </div>`
+    document.body.insertAdjacentHTML('beforeend', modal)
+  }
+
   const readNews = (arr) => {
     newsList.addEventListener('click', function click(e) {
       let target = e.target
@@ -42,8 +50,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
       delete item.userId
       return {
         ...item,
-        date: randomDate(new Date(2021, 0, 1), new Date()).toLocaleString(),
-        author: generateName(),
+        date: randomDate(new Date(2021, 0, 1), new Date()),
+        author: 'Author123',
         read: false
       }
     })
@@ -52,6 +60,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
   const renderNews = (arr) => {
     newsList.textContent = '';
     arr.forEach(n => {
+      date = n.date.toLocaleString()
       let newsItem = 
       `<li class="news__list-item ${n.read ? 'news__list-item--read' : ''}" data-id="${n.id}">
           <article class="news__item">
@@ -65,8 +74,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
             <div class="news__item-bottom">
               <div class="news__item-status">${n.read ? 'Прочитано' : 'Не прочитано'}</div>
               <div class="news__item-date">
-                <time>${n.date.split(', ')[0]}</time>
-                <time>${n.date.split(' ')[1]}</time>
+                <time>${date.split(', ')[0]}</time>
+                <time>${date.split(' ')[1]}</time>
               </div>
               <a class="news__item-link" href="#">Узнать больше</a>
             </div>
@@ -98,6 +107,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
       data = await response.json()
       data.splice(10)
       const newsArr = mapArr(data)
+      newsArr.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date)
+      })
+      console.log(newsArr);
       createButton(newsArr)
       
     } catch (e) {
