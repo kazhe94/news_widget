@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
       newsArr.sort((a, b) => {
         return new Date(b.date) - new Date(a.date)
       })
-      console.log(newsArr);
       createButton(newsArr)
       
     } catch (e) {
